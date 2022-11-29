@@ -1,50 +1,51 @@
-import time 
+# import time 
+import sys
+from Utils import *
 
 
-def get_time():
-    # tempo = {}
-    tempo = dict()
-    tempo["tms"] = time.time()
-    tempo["tms_local"] = time.localtime(tempo["tms"])
-    tempo["tms_str"] = time.strftime("%d-%m-%Y, %H:%M:%S", tempo["tms_local"])
-    return  tempo
-    
-
-def time_elapsed(time_start, time_end):
-    ore = int((time_end-time_start) // 3600)
-    minuti = int(((time_end - time_start) - ore * 3600) // 60)
-    secondi = (time_end - time_start) - ore * 3600 - minuti * 60 
-    
-    '''
-    to_print = "Tempo di calcolo: {ore} ore   {min} minuti  {sec} secondi".format(
-        ore=str(ore), min=str(minuti), sec=str(secondi)    
-    ) 
-    '''
-    to_print = f"Tempo di calcolo: {ore} ore   {minuti} minuti  {secondi} secondi"
-     
-
-    print(to_print)
-    # print("Tempo di calcolo: " + str(ore) + " ore " + str(minuti) + " minuti " + str(secondi) + " secondi")
-
-
-
+def calcolo_fattoriale(a, b):
+    x = a + 1
+    y = a + 2
+    while (y <= b and x < sys.maxsize / y):
+        x *= y
+        y += 1
+    # se y 0 b+1 abbiamo calcolato tutto il fattoriale
+    if (y == b + 1): 
+        return x
+    else:
+        return 0
+        # return BigInt.multiply(q(a, (a + b) / 2), q((a + b) / 2, b));
 
 
 def computeF(n):
     # print(n)
     t0 = get_time()
-    time.sleep(1)
+    lp = calcolo_fattoriale(0, n)
     t1 = get_time()
+    print("n = " + str(n) + "--> " + str(lp))
+    # print("n = " + n + ", digits = " + lp+", time = " + Util.askTime() + "sec.");
     time_elapsed(t0["tms"], t1["tms"])
 
 
-
-if __name__ == "__main__":
-    n = 10000
+def main():
+    n = 10
     while n <= 10000000:
         computeF(n)
+        
         n *= 10
 
+
+
+main()
+
+'''
+if __name__ == "__main__":
+    n = 10
+    while n <= 10000000:
+        computeF(n)
+        
+        n *= 10
+'''
 
 # ============================= 8-proc ===================================================================
 #	n =    10000, digits =   35660, time =    0.145sec., memory 0.0M, max memory 0M
