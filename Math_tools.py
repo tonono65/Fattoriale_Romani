@@ -74,7 +74,10 @@ def realFT(data, transform):
         wi = wpi
         np3 = n + 3
         for i in range(2, n >> 2 + 1):
-            i4 = 1 + (i3 = np3 - (i2 = 1 + (i1 = i + i - 1)))
+            i1 = i + i - 1
+            i2 = 1 + i1
+            i3 = np3 - i2
+            i4 = 1 + i3
             h1r = c1 * (data[i1 - 1] + data[i3 - 1])
             h1i = c1 * (data[i2 - 1] - data[i4 - 1])
             h2r = -c2 * (data[i2 - 1] + data[i4 - 1])
@@ -83,16 +86,19 @@ def realFT(data, transform):
             data[i2 - 1] = (h1i + wr * h2i + wi * h2r)
             data[i3 - 1] = (h1r - wr * h2r + wi * h2i)
             data[i4 - 1] = (-h1i + wr * h2i + wi * h2r)
-            wr = (wtemp = wr) * wpr - wi * wpi + wr
+            wtemp = wr
+            wr = wtemp * wpr - wi * wpi + wr
             wi = wi * wpr + wtemp * wpi + wi
         
         if (transform == DIRECT):
-            data[0] = ((h1r = data[0]) + data[1])
+            h1r = data[0]
+            data[0] = h1r + data[1]
             data[1] = (h1r - data[1])
             for i in range(n):
                 data[i] = (data[i] / math.sqrt(n))
         else:
-            data[0] = (c1 * ((h1r = data[0]) + data[1]))
+            h1r = data[0]
+            data[0] = (c1 * (h1r + data[1]))
             data[1] = (c1 * (h1r - data[1]))
             four1(data, INVERSE)
             for i in range(n):
@@ -158,7 +164,8 @@ def four1(data, transform):
                 data[j] = (data[i] - tempi)
                 data[i - 1] = (data[i - 1] + tempr)
                 data[i] = (data[i] + tempi)
-            wr = (wtemp = wr) * wpr - wi * wpi + wr
+            wtemp = wr
+            wr = wtemp * wpr - wi * wpi + wr
             wi = wi * wpr + wtemp * wpi + wi
         mmax = istep
 
