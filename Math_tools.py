@@ -3,18 +3,6 @@ import math
 from Costanti import *
 
 
-
-
-'''
-public static void testN(int n) {
-		int k = n;
-		while (k > 1) {
-			if (k % 2 == 1)
-				throw new IllegalArgumentException("FFT: n not power of two "+ n);
-			k /= 2;
-		}
-	}
-'''
 def testa_potenza_di_2(n):
     k = n
     while (k > 1):
@@ -47,8 +35,9 @@ def trova_prima_potenzadi_due_non_minore(n):
 
 
 
-    '''
-    /**
+
+'''
+	/**
      * performs a transform on a set of real values 
      *
      * @param data the set of data (the lenght must be a power of two)
@@ -57,56 +46,7 @@ def trova_prima_potenzadi_due_non_minore(n):
      * 	transform == FFT.INVERSE means inverse transform
      * 
      */  
-	public static void realFT(double[] data, int transform) {
-		int n = data.length;
-		testN(n);
-
-		int i, i1, i2, i3, i4, np3;
-		double wr, wi, wpr, wpi, wtemp, theta, c1 = 0.5, c2, h1r, h1i, h2r, h2i;
-
-		theta = Math.PI / (n >> 1);
-		if (transform == DIRECT) {
-			c2 = -0.5;
-			four1(data, true);
-		} else {
-			c2 = 0.5;
-			theta = -theta;
-		}
-		wtemp = Math.sin(0.5 * theta);
-		wpr = -2.0 * wtemp * wtemp;
-		wpi = Math.sin(theta);
-		wr = 1.0 + wpr;
-		wi = wpi;
-		np3 = n + 3;
-		for (i = 2; i <= (n >> 2); i++) {
-			i4 = 1 + (i3 = np3 - (i2 = 1 + (i1 = i + i - 1)));
-			h1r = c1 * (data[i1 - 1] + data[i3 - 1]);
-			h1i = c1 * (data[i2 - 1] - data[i4 - 1]);
-			h2r = -c2 * (data[i2 - 1] + data[i4 - 1]);
-			h2i = c2 * (data[i1 - 1] - data[i3 - 1]);
-			data[i1 - 1] = (h1r + wr * h2r - wi * h2i);
-			data[i2 - 1] = (h1i + wr * h2i + wi * h2r);
-			data[i3 - 1] = (h1r - wr * h2r + wi * h2i);
-			data[i4 - 1] = (-h1i + wr * h2i + wi * h2r);
-			wr = (wtemp = wr) * wpr - wi * wpi + wr;
-			wi = wi * wpr + wtemp * wpi + wi;
-		}
-		if (transform == DIRECT) {
-			data[0] = ((h1r = data[0]) + data[1]);
-			data[1] = (h1r - data[1]);
-			for (i = 0; i < n; i++)
-				data[i] = (data[i] / Math.sqrt(n));
-		} else {
-			data[0] = (c1 * ((h1r = data[0]) + data[1]));
-			data[1] = (c1 * (h1r - data[1]));
-			four1(data, false);
-			for (i = 0; i < n; i++)
-				data[i] = (2 * data[i] / Math.sqrt(n));
-		}
-	}
-	
-    '''
-
+'''
 def realFT(data, transform):
     n = len(data)
     try:
@@ -223,7 +163,7 @@ def four1(data, transform):
         mmax = istep
 
 
-    '''
+'''
     /**
      * performs a transform on a set of complex values
      *
@@ -288,4 +228,76 @@ def four1(data, transform):
 		}
 	}
 	
-    '''
+'''
+
+'''
+    /**
+     * performs a transform on a set of real values 
+     *
+     * @param data the set of data (the lenght must be a power of two)
+     * @param transform the task to be accomplished<br>
+     * 	transform == FFT.DIRECT  means direct transform<br>
+     * 	transform == FFT.INVERSE means inverse transform
+     * 
+     */  
+	public static void realFT(double[] data, int transform) {
+		int n = data.length;
+		testN(n);
+
+		int i, i1, i2, i3, i4, np3;
+		double wr, wi, wpr, wpi, wtemp, theta, c1 = 0.5, c2, h1r, h1i, h2r, h2i;
+
+		theta = Math.PI / (n >> 1);
+		if (transform == DIRECT) {
+			c2 = -0.5;
+			four1(data, true);
+		} else {
+			c2 = 0.5;
+			theta = -theta;
+		}
+		wtemp = Math.sin(0.5 * theta);
+		wpr = -2.0 * wtemp * wtemp;
+		wpi = Math.sin(theta);
+		wr = 1.0 + wpr;
+		wi = wpi;
+		np3 = n + 3;
+		for (i = 2; i <= (n >> 2); i++) {
+			i4 = 1 + (i3 = np3 - (i2 = 1 + (i1 = i + i - 1)));
+			h1r = c1 * (data[i1 - 1] + data[i3 - 1]);
+			h1i = c1 * (data[i2 - 1] - data[i4 - 1]);
+			h2r = -c2 * (data[i2 - 1] + data[i4 - 1]);
+			h2i = c2 * (data[i1 - 1] - data[i3 - 1]);
+			data[i1 - 1] = (h1r + wr * h2r - wi * h2i);
+			data[i2 - 1] = (h1i + wr * h2i + wi * h2r);
+			data[i3 - 1] = (h1r - wr * h2r + wi * h2i);
+			data[i4 - 1] = (-h1i + wr * h2i + wi * h2r);
+			wr = (wtemp = wr) * wpr - wi * wpi + wr;
+			wi = wi * wpr + wtemp * wpi + wi;
+		}
+		if (transform == DIRECT) {
+			data[0] = ((h1r = data[0]) + data[1]);
+			data[1] = (h1r - data[1]);
+			for (i = 0; i < n; i++)
+				data[i] = (data[i] / Math.sqrt(n));
+		} else {
+			data[0] = (c1 * ((h1r = data[0]) + data[1]));
+			data[1] = (c1 * (h1r - data[1]));
+			four1(data, false);
+			for (i = 0; i < n; i++)
+				data[i] = (2 * data[i] / Math.sqrt(n));
+		}
+	}
+	
+'''
+
+'''
+ORA testa_potenza_di_2(n) 
+public static void testN(int n) {
+		int k = n;
+		while (k > 1) {
+			if (k % 2 == 1)
+				throw new IllegalArgumentException("FFT: n not power of two "+ n);
+			k /= 2;
+		}
+	}
+'''
