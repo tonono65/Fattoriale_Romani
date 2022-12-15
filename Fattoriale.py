@@ -1,9 +1,16 @@
 # import time 
 import sys
+from Costanti import *
 from Utils import *
+from Math_tools import * 
 
-
+# in java funzione q()
 def calcolo_fattoriale(a, b):
+    """ 
+    in java funzione q()
+    a = 0
+    b = valore di cui calcolare il fattoriale
+    """
     x = a + 1
     y = a + 2
     while (y <= b and x < sys.maxsize / y):
@@ -13,16 +20,17 @@ def calcolo_fattoriale(a, b):
     if (y == b + 1): 
         return x
     else:
-        return 0
+        return multiply(calcolo_fattoriale(a, (a + b) / 2), calcolo_fattoriale((a + b) / 2, b))
         # return BigInt.multiply(q(a, (a + b) / 2), q((a + b) / 2, b));
+        
 
 
 def computeF(n):
     # print(n)
     t0 = get_time()
-    lp = calcolo_fattoriale(0, n)
+    fattoriale = calcolo_fattoriale(0, n)
     t1 = get_time()
-    print("n = " + str(n) + "--> " + str(lp))
+    print("n = " + str(n) + "--> " + str(fattoriale))
     # print("n = " + n + ", digits = " + lp+", time = " + Util.askTime() + "sec.");
     time_elapsed(t0["tms"], t1["tms"])
 

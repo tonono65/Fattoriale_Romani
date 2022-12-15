@@ -170,6 +170,56 @@ def four1(data, transform):
         mmax = istep
 
 
+def togli_zeri_in_testa_vettore(vettore):
+    """
+    Bigint.normalize()
+    """
+    pass
+
+'''
+  {
+		isZero = false;
+		int i = A.length - 1;
+		while (i >= 0 && A[i] == 0) i--;
+		if (i == -1) {
+			this.A = new byte[1];
+			isZero=true;
+		}
+		else if (i == A.length - 1) return;
+		byte[] res = new byte[i + 1];
+		System.arraycopy(A, 0, res, 0, i + 1);
+		A = res;
+	}
+
+'''
+
+def simple_multyply(vettore1, vettore2):
+    pass
+
+'''
+private static BigInt simpleMultiply(BigInt val1, BigInt val2) {
+		if (val1.A.length < val2.A.length) return simpleMultiply(val2, val1);
+		int[] acc = new int[val1.A.length + val2.A.length];
+		for (int k = 0; k < val2.A.length; k++)
+			for (int i = 0; i < val1.A.length; i++)
+				acc[i + k] += val1.A[i] * val2.A[k];
+		BigInt res = propagateCarries(acc);
+		return res;
+'''
+
+
+def fft_multyply(vettore1, vettore2):
+    pass
+
+
+def multiply(vettore1, vettore2):
+    if len(vettore1) < LIMITE or len(vettore2) < LIMITE:
+        return simple_multiply(vettore1, vettore2)
+    else:
+        return fft_multiply.multiply(vettore1, vettore2)
+	
+
+
 '''
     /**
      * performs a transform on a set of complex values
@@ -308,3 +358,69 @@ public static void testN(int n) {
 		}
 	}
 '''
+'''
+public static BigInt multiply(BigInt val1, BigInt val2) {
+		if(val1.A.length<LIM || val2.A.length<LIM)return simpleMultiply(val1, val2);
+		return FFTMultiply.multiply(val1, val2);
+	}
+'''
+'''
+	private static BigInt simpleMultiply(BigInt val1, BigInt val2) {
+		if (val1.A.length < val2.A.length) return simpleMultiply(val2, val1);
+		int[] acc = new int[val1.A.length + val2.A.length];
+		for (int k = 0; k < val2.A.length; k++)
+			for (int i = 0; i < val1.A.length; i++)
+				acc[i + k] += val1.A[i] * val2.A[k];
+		BigInt res = propagateCarries(acc);
+		return res;
+	}
+'''
+
+'''
+    public void normalize() {
+		isZero = false;
+		int i = A.length - 1;
+		while (i >= 0 && A[i] == 0) i--;
+		if (i == -1) {
+			this.A = new byte[1];
+			isZero=true;
+		}
+		else if (i == A.length - 1) return;
+		byte[] res = new byte[i + 1];
+		System.arraycopy(A, 0, res, 0, i + 1);
+		A = res;
+	}
+'''
+
+'''
+**********************************************************************************************************	
+public static BigInt add(BigInt val1, BigInt val2) {
+		if(val1.A.length<val2.A.length)return add(val2,val1);
+		int[] res = new int[val1.A.length+1];
+		for (int i = 0; i < val2.A.length; i++) res[i]=val1.A[i]+val2.A[i];
+		for (int i = val2.A.length; i < val1.A.length; i++) res[i]=val1.A[i];
+		return propagateCarries(res);
+	}
+
+**********************************************************************************************************	
+	private static BigInt propagateCarries(int[] AF) {
+		BigInt res = null;
+		byte[] A = new byte[AF.length];
+		long carry = 0;
+		for (int i = 0; i < AF.length; i++) {
+			long x = ((long) AF[i]) + carry;
+			carry = x / BASE;
+			A[i] = (byte) (x % BASE);
+		}
+		if (carry == 0) {
+			res = new BigInt(A);
+ 			res.normalize();
+			return res;
+		}		
+		byte[] A1 = new byte[A.length + 1];
+		System.arraycopy(A, 0, A1, 0,A.length);
+		A1[A.length] = (byte) carry;
+		return new BigInt(A1);
+	}
+
+}'''
