@@ -29,8 +29,12 @@ def computeF(n):
     # print(n)
     t0 = get_time()
     fattoriale = calcolo_fattoriale(0, n)
+    if isinstance(fattoriale, list):
+        digits = BASE_to_10(fattoriale)
+    else:
+        digits = len(str(fattoriale))
     t1 = get_time()
-    print("n = " + str(n) + "--> " + str(fattoriale))
+    print("n = " + str(n) + "--> " + str(digits))
     # print("n = " + n + ", digits = " + lp+", time = " + Util.askTime() + "sec.");
     time_elapsed(t0["tms"], t1["tms"])
 

@@ -175,6 +175,15 @@ def four1(data, transform):
         mmax = istep
 
 
+def BASE_to_10(vettore):
+    vettore = togli_zeri_in_testa_vettore(vettore)
+    if vettore[-1] < 10:
+        return len(vettore) * 2 - 1
+    else:
+        return len(vettore) * 2
+
+
+
 def togli_zeri_in_testa_vettore(vettore):
     """
 	normalize 
@@ -191,15 +200,12 @@ def togli_zeri_in_testa_vettore(vettore):
 
 
 def simple_multiply(vettore1, vettore2):
-    """
-	simple_Multiply(BigInt val1, BigInt val2)
-	"""
     if len(vettore1) < len(vettore2):
         return simple_multiply(vettore2, vettore1)
 
     acc = [0 for i in range(len(vettore1) + len(vettore2))]
     for k in range(len(vettore2)):
-        for i in range(len(vettore2)):
+        for i in range(len(vettore1)):
             acc[i + k] += vettore1[i] * vettore2[k]
     return togli_zeri_in_testa_vettore(acc)
 
