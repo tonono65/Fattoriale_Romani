@@ -239,25 +239,29 @@ def fft_multiply(vettore1, vettore2):
     realFFT(BF, DIRECT)
     return multiply_interna(AF, BF) 
 
-"""
-public class FFTMultiply {
-	public final static int BASE = BigInt.BASE, BASE1 = BASE-1;
-	
-	public static BigInt multiply(BigInt val1, BigInt val2) {
-		int n = FFT.makePowerOfTwo(Math.max(val1.A.length, val2.A.length)) * 2;
-		double[] AF = FFT.padWithZeros(val1.A, n);
-		double[] BF = FFT.padWithZeros(val2.A, n);
-		FFT.realFT(AF, FFT.DIRECT);
-		FFT.realFT(BF, FFT.DIRECT);
-		BigInt res = new BigInt(multiply(AF, BF));
- 		return res;
-	}
-
-
-"""
+# Trasforma un intero in un vettore in base = BASE con le cifre da sx [0] a dx [len-1]
+def int_to_vettore(x):
+    vettore = []
+    if x == 0:
+        return [1]
+    else:
+        n = 1
+        z = x
+        while (z // BASE) > 0:
+            z = z // BASE
+            n +=1
+        for i in range(n):
+            vettore.append(x % BASE)
+            x = x // BASE
+        return vettore
 
 
 def multiply(vettore1, vettore2):
+    if isinstance(vettore1, int):
+        vettore1 = int_to_vettore(vettore1)
+    if isinstance(vettore2, int):
+        vettore2 = int_to_vettore(vettore2)
+        
     if len(vettore1) < LIMITE or len(vettore2) < LIMITE:
         return simple_multiply(vettore1, vettore2)
     else:

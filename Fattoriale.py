@@ -13,14 +13,14 @@ def calcolo_fattoriale(a, b):
     """
     x = a + 1
     y = a + 2
-    while (y <= b and x < sys.maxsize / y):
+    while (y <= b) and (x < sys.maxsize / y):
         x *= y
         y += 1
     # se y 0 b+1 abbiamo calcolato tutto il fattoriale
     if (y == b + 1): 
         return x
     else:
-        return multiply(calcolo_fattoriale(a, (a + b) / 2), calcolo_fattoriale((a + b) / 2, b))
+        return multiply(calcolo_fattoriale(a, (a + b) // 2), calcolo_fattoriale((a + b) // 2, b))
         # return BigInt.multiply(q(a, (a + b) / 2), q((a + b) / 2, b));
         
 
