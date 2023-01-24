@@ -1,9 +1,15 @@
 import time 
 import math
 from Costanti import *
+import scipy as sp
+from  math import *
+from scipy.fft import *
 
 
-def propagate(vettore):
+
+def propaga_resti_che_eccedono_BASE(vettore):
+    # * propaga i resti
+    #  
 	riporto = 0
 	vettore_propagato = [0 for i in range(len(vettore))] 
 	for i in range(len(vettore)):
@@ -18,20 +24,13 @@ def propagate(vettore):
 
 
 def testa_potenza_di_2(n):
+    # * verifica se n è una potenza di 2
+    # *
     k = n
     while (k > 1):
         if (k % 2) == 1:
             raise Exception(f"FFT: {n} not power of two ") 
         k /= 2
-
-
-def  makePowerOfTwo(n):    # **
-    # * find the first power of two not smaller than n
-    # *
-    twoPower = 1
-    while twoPower < n:
-        twoPower *= 2
-    return twoPower
 
 
 
@@ -43,18 +42,91 @@ def trova_prima_potenzadi_due_non_minore(n):
 
 
 
+def BASE_to_10(vettore):
+    vettore = togli_zeri_in_testa_vettore(vettore)
+    if vettore[-1] < 10:
+        return len(vettore) * 2 - 1
+    else:
+        return len(vettore) * 2
 
-'''
-	/**
-     * performs a transform on a set of real values 
-     *
-     * @param data the set of data (the lenght must be a power of two)
-     * @param transform the task to be accomplished<br>
-     * 	transform == FFT.DIRECT  means direct transform<br>
-     * 	transform == FFT.INVERSE means inverse transform
-     * 
-     */  
-'''
+
+
+def togli_zeri_in_testa_vettore(vettore):
+    i = len(vettore) - 1
+    while i >= 0 and vettore[i] == 0:
+        i -= 1
+    if i == -1:
+        return []
+    elif i == len(vettore) - 1:
+        return vettore
+    else:
+        return vettore[0:i+1]
+
+
+
+# Trasforma un intero in un vettore in base = BASE con le cifre da sx [0] a dx [len-1]
+def int_to_vettore(x):
+    vettore = []
+    if x == 0:
+        return [1]
+    else:
+        n = 1
+        z = x
+        while (z // BASE) > 0:
+            z = z // BASE
+            n +=1
+        for i in range(n):
+            vettore.append(x % BASE)
+            x = x // BASE
+        return vettore
+
+def multiply(vettore1, vettore2):
+    if isinstance(vettore1, int):
+        vettore1 = int_to_vettore(vettore1)
+    if isinstance(vettore2, int):
+        vettore2 = int_to_vettore(vettore2)
+        
+    if len(vettore1) < LIMITE or len(vettore2) < LIMITE:
+        return simple_multiply(vettore1, vettore2)
+    else:
+        return new_fft_multiply(vettore1, vettore2)
+	
+
+
+def simple_multiply(vettore1, vettore2):
+    if len(vettore1) < len(vettore2):
+        return simple_multiply(vettore2, vettore1)
+
+    acc = [0 for i in range(len(vettore1) + len(vettore2))]
+    for k in range(len(vettore2)):
+        for i in range(len(vettore1)):
+            acc[i + k] += vettore1[i] * vettore2[k]
+            acc = propaga_resti_che_eccedono_BASE(acc)
+            # print(str(acc))
+    return acc
+
+
+def new_fft_multiply(vettore1, vettore2):
+    n = trova_prima_potenzadi_due_non_minore(2 * max(len(vettore1), len(vettore2))) 
+    
+
+    ya = n * ifft(vettore1, n)
+    yb = n * ifft(vettore2, n)
+    yc = ya * yb
+    
+    vettore3 = sp.real(1./n * fft(yc))
+    vettore3 = sp.around(vettore3, 0)
+    vettore3 = propaga_resti_che_eccedono_BASE(vettore3)    
+    return(vettore3)
+    
+
+
+    
+
+# *****************************************************************
+# FUNZIONI DI ROMANI (non utilizzate)
+# *****************************************************************
+
 def realFFT(data, transform):
     n = len(data)
     try:
@@ -115,8 +187,8 @@ def realFFT(data, transform):
      * performs a transform on a set of complex values
      *
      * @param data the set of data (the lenght must be a power of two)
-     * @param direct the task to be accomplished<br>
-     * 	direct == true  means direct transform<br>
+     * @param direct the task to be accomplished
+     * 	direct == true  means direct transform
      * 	direct == false means inverse transform
 '''
 
@@ -174,42 +246,6 @@ def four1(data, transform):
             wi = wi * wpr + wtemp * wpi + wi
         mmax = istep
 
-
-def BASE_to_10(vettore):
-    vettore = togli_zeri_in_testa_vettore(vettore)
-    if vettore[-1] < 10:
-        return len(vettore) * 2 - 1
-    else:
-        return len(vettore) * 2
-
-
-
-def togli_zeri_in_testa_vettore(vettore):
-    """
-	normalize 
-	"""
-    i = len(vettore) - 1
-    while i >= 0 and vettore[i] == 0:
-        i -= 1
-    if i == -1:
-        return []
-    elif i == len(vettore) - 1:
-        return vettore
-    else:
-        return vettore[0:i+1]
-
-
-def simple_multiply(vettore1, vettore2):
-    if len(vettore1) < len(vettore2):
-        return simple_multiply(vettore2, vettore1)
-
-    acc = [0 for i in range(len(vettore1) + len(vettore2))]
-    for k in range(len(vettore2)):
-        for i in range(len(vettore1)):
-            acc[i + k] += vettore1[i] * vettore2[k]
-    return togli_zeri_in_testa_vettore(acc)
-
-
 def multiply_interna(AF, BF):
     n = len(AF)
     if len(AF) != len(BF):
@@ -244,34 +280,3 @@ def fft_multiply(vettore1, vettore2):
     realFFT(AF, DIRECT)
     realFFT(BF, DIRECT)
     return multiply_interna(AF, BF) 
-
-# Trasforma un intero in un vettore in base = BASE con le cifre da sx [0] a dx [len-1]
-def int_to_vettore(x):
-    vettore = []
-    if x == 0:
-        return [1]
-    else:
-        n = 1
-        z = x
-        while (z // BASE) > 0:
-            z = z // BASE
-            n +=1
-        for i in range(n):
-            vettore.append(x % BASE)
-            x = x // BASE
-        return vettore
-
-
-def multiply(vettore1, vettore2):
-    if isinstance(vettore1, int):
-        vettore1 = int_to_vettore(vettore1)
-    if isinstance(vettore2, int):
-        vettore2 = int_to_vettore(vettore2)
-        
-    if len(vettore1) < LIMITE or len(vettore2) < LIMITE:
-        return simple_multiply(vettore1, vettore2)
-    else:
-        return fft_multiply(vettore1, vettore2)
-	
-
-

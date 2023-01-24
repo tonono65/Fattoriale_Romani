@@ -6,26 +6,19 @@ from Math_tools import *
 
 # in java funzione q()
 def calcolo_fattoriale(a, b):
-    """ 
-    in java funzione q()
-    a = 0
-    b = valore di cui calcolare il fattoriale
-    """
     x = a + 1
     y = a + 2
     while (y <= b) and (x < sys.maxsize / y):
         x *= y
         y += 1
-    # se y 0 b+1 abbiamo calcolato tutto il fattoriale
+    # se y = b+1 abbiamo calcolato tutto il fattoriale
     if (y == b + 1): 
         return x
     else:
         return multiply(calcolo_fattoriale(a, (a + b) // 2), calcolo_fattoriale((a + b) // 2, b))
-        # return BigInt.multiply(q(a, (a + b) / 2), q((a + b) / 2, b));
-        
 
 
-def computeF(n):
+def calcola_fattoriale_e_numero_cifre(n):
     # print(n)
     t0 = get_time()
     fattoriale = calcolo_fattoriale(0, n)
@@ -34,17 +27,17 @@ def computeF(n):
     else:
         digits = len(str(fattoriale))
     t1 = get_time()
-    print("n = " + str(n) + "--> " + str(digits))
+    print("n = " + str(n) + " numero cifre --> " + str(digits), "   -->   ",  end = '')
     # print("n = " + n + ", digits = " + lp+", time = " + Util.askTime() + "sec.");
     time_elapsed(t0["tms"], t1["tms"])
 
 
 def main():
     n = 10
-    while n <= 10000000:
-        computeF(n)
-        
+    while n <= 10000:
+        calcola_fattoriale_e_numero_cifre(n)
         n *= 10
+        print(n)
 
 
 
@@ -54,10 +47,11 @@ main()
 if __name__ == "__main__":
     n = 10
     while n <= 10000000:
-        computeF(n)
+        calcola_fattoriale_e_numero_cifre(n)
         
         n *= 10
 '''
+
 
 # ============================= 8-proc ===================================================================
 #	n =    10000, digits =   35660, time =    0.145sec., memory 0.0M, max memory 0M
